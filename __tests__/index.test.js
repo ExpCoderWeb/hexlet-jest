@@ -1,15 +1,16 @@
+import { fileURLToPath } from 'url';
+import fs from 'fs';
+import path from 'path';
 import reverse from '../src/index.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-test('pop in empty stack', () => {
-  const stack = [];
-  // Вызов метода pop обернут в функцию
-  // Иначе матчер не сможет перехватить исключение
-  expect(() => stack.pop()).toThrow();
+const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
+const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
+
+test('reverse', () => {
+  const text = readFile('string.txt');
+  const result = readFile('reversed-string.txt');
+  expect(reverse(text)).toEqual(result);
 });
-
-test ('reverse', () => {
-  expect(reverse('hello')).toEqual('olleh');
-  expect(reverse('')).toEqual('');
-});
-
